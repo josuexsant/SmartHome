@@ -1,5 +1,7 @@
 import mqtt from "mqtt";
 
+
+
 // var client = new Paho.MQTT.Client("broker.emqx.io", 8084, clientId);
 const client = mqtt.connect("ws://broker.emqx.io:8083/mqtt");
 const topic = "cesar";

@@ -1,38 +1,42 @@
-export const data = {
-  "bedroom": {
+export const data = [
+  {
+    "name": "bedroom",
     "light": {
       "on": false,
-      "intensity": 0
+      "value": 0
     },
     "temperature": 24,
     "air": {
       "on": false,
-      "intensity": 0
+      "value": 0
     }
   },
-  "bathroom" : {
+  {
+    "name": "bathroom",
     "light": {
       "on": false,
-      "intensity": 0
+      "value": 0
     },
     "waterService": false
   },
-  "kitchen": {
+  {
+    "name": "kitchen",
     "light": {
       "on": false,
-      "intensity": 0
+      "value": 0
     },
     "gasService": false
   },
-  "livingRoom": {
+  {
+    "name": "livingRoom",
     "light": {
       "on": false,
-      "intensity": 0
+      "value": 0
     },
     "temperature": 24,
     "air": {
       "on": false,
-      "intensity": 0
+      "value": 0
     },
     "tv": {
       "on": false,
@@ -42,6 +46,6 @@ export const data = {
       "open": false
     }
   }
-};
+];
 
 export default data;
