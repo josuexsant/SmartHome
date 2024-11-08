@@ -1,11 +1,17 @@
 import "./App.css";
 import { publish } from "./helpers/client";
+import { useState } from "react";
 import data from "./helpers/data";
 
 function App() {
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
 
   const handleClick = () => {
     publish(data);
+  };
+
+  const handleCheckboxChange = (index) => {
+    setSelectedCheckbox(index);
   };
 
   return (
@@ -16,7 +22,18 @@ function App() {
       <br />
       <br />
       <br />
-      <h2>Proximamente...</h2>
+
+      {["Dormitorio,"].map((_, index) => (
+        <div key={index}>
+          <input
+            type="checkbox"
+            checked={selectedCheckbox === index}
+            onChange={() => handleCheckboxChange(index)}
+          />
+          Checkbox {index + 1}
+        </div>
+      ))}
+
       <button onClick={handleClick}>Encender</button>
     </>
   );
