@@ -49,7 +49,8 @@ client.on("message", (topic, message) => {
     }
  */
 export const publish = (message) => {
-  client.publish(topic, message);
+  const jsonMessage = JSON.stringify(message);
+  client.publish(topic, jsonMessage);
 };
 
 export default publish;

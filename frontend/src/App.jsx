@@ -1,10 +1,11 @@
 import "./App.css";
 import { publish } from "./helpers/client";
+import data from "./helpers/data";
 
 function App() {
 
   const handleClick = () => {
-    publish("Encenddido");
+    publish(data);
   };
 
   return (
