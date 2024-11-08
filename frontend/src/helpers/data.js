@@ -43,7 +43,8 @@ export const data = [
       "timer": 0
     },
     "door": {
-      "open": false
+      "open": false,
+      "password": 1234
     }
   }
 ];
