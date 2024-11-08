@@ -1,7 +1,7 @@
 import "./App.css";
-import { publish } from "./helpers/client";
+import { publish } from "./client";
 import { useState } from "react";
-import data from "./helpers/data";
+import data from "./data";
 import { useNavigate } from "react-router-dom";
 
 function Unlock() {
