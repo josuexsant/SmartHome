@@ -5,6 +5,10 @@ export const data = [
       on: false,
       value: 0,
     },
+    ceilingFan: {
+      on: false,
+      value: 0,
+    },
     temperature: 24,
     air: {
       on: false,
@@ -35,6 +39,10 @@ export const data = [
     },
     temperature: 24,
     air: {
+      on: false,
+      value: 0,
+    },
+    ceilingFan: {
       on: false,
       value: 0,
     },

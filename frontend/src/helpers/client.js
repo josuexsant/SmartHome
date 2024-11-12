@@ -1,6 +1,5 @@
 import mqtt from "mqtt";
-
-
+import useMessage from "../hooks/useMessage";
 
 // var client = new Paho.MQTT.Client("broker.emqx.io", 8084, clientId);
 const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
@@ -38,8 +37,12 @@ client.on("error", (e) => {
       messagesDiv.appendChild(newMessage);
     }
  */
+
 client.on("message", (topic, message) => {
-  console.log(message.toString());
+  console.log("Un mensaje ha llegado: " + message.toString());
+  const { setMessage } = useMessage();
+  const parsedMessage = JSON.parse(message.toString());
+  setMessage(parsedMessage);
 });
 
 /**

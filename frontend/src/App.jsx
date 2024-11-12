@@ -3,12 +3,44 @@ import { publish } from "./helpers/client";
 import { useEffect, useState } from "react";
 import data from "./helpers/data";
 import { useNavigate } from "react-router-dom";
+import useMessage from "./hooks/useMessage";
 
 function App() {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState(data);
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
   const [visit, setVisit] = useState(false);
+  const { bedroomTemp, livingRoomTemp, bell } = useMessage();
+
+  useEffect(() => {
+    if (bedroomTemp !== null) {
+      setRooms((prevRooms) => {
+        const updatedRooms = [...prevRooms];
+        updatedRooms[0].temperature = bedroomTemp;
+        return updatedRooms;
+      });
+    }
+  }, [bedroomTemp]);
+
+  useEffect(() => {
+    if (livingRoomTemp !== null) {
+      setRooms((prevRooms) => {
+        const updatedRooms = [...prevRooms];
+        updatedRooms[3].temperature = livingRoomTemp;
+        return updatedRooms;
+      });
+    }
+  }, [livingRoomTemp]);
+
+  useEffect(() => {
+    if (bell !== null) {
+      setRooms((prevRooms) => {
+        const updatedRooms = [...prevRooms];
+        updatedRooms[3].bell.value = bell;
+        return updatedRooms;
+      });
+    }
+  }, [bell]);
 
   // TODO: Implementar el timbre de la puerta
   useEffect(() => {
