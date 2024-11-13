@@ -39,13 +39,16 @@ function App() {
         updatedRooms[3].bell.value = bell;
         return updatedRooms;
       });
+
+      if (bell < 5) {
+        setVisit(true);
+      } else {  
+        setVisit(false);
+      }
     }
   }, [bell]);
 
   // TODO: Implementar el timbre de la puerta
-  useEffect(() => {
-    setVisit([rooms[3].bell.on]);
-  }, [rooms]);
 
   const handleCheckboxChange = (index) => {
     setSelectedCheckbox(index);
