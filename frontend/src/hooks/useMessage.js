@@ -1,23 +1,30 @@
-import { useEffect, useState } from 'react';
-import { json } from '../helpers/client';
+import { useEffect, useState } from "react";
+import { useClient } from "../helpers/client";
 
 export default function useMessage() {
-  
-  useEffect(() => {
-    console.log(json + "useMessage");
-  }, [json]);
+  const { json } = useClient();
 
   const [bedroomTemp, setBedroomTemp] = useState(null);
   const [livingRoomTemp, setLivingRoomTemp] = useState(null);
   const [bell, setBell] = useState(null);
 
-  const setMessage = (parsedMessage) => {
-    if (parsedMessage.room === 'bedroom') {
-      setBedroomTemp(parsedMessage.temperature);
-    } else if (parsedMessage.room === 'livingRoom') {
-      setLivingRoomTemp(parsedMessage.temperature);
+  useEffect(() => {
+    if (json) {
+      console.log(json, " useMessage");
+      setMessage(json);
     }
-    setBell(parsedMessage.bell.value);
+  }, [json]);
+
+  const setMessage = (parsedMessage) => {
+    if (parsedMessage.bedroomTemp !== undefined) {
+      setBedroomTemp(parsedMessage.bedroomTemp);
+    }
+    if (parsedMessage.livingRoomTemp !== undefined) {
+      setLivingRoomTemp(parsedMessage.livingRoomTemp);
+    }
+    if (parsedMessage.bell !== undefined) {
+      setBell(parsedMessage.bell);
+    }
   };
 
   return { bedroomTemp, livingRoomTemp, bell, setMessage };
