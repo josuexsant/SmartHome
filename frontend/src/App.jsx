@@ -11,6 +11,11 @@ function App() {
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
   const [visit, setVisit] = useState(false);
   const { bedroomTemp, livingRoomTemp, bell } = useMessage();
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setOpen(rooms[3].door.open);
+  }, [rooms]);
 
   useEffect(() => {
     if (bedroomTemp !== null) {
@@ -42,7 +47,7 @@ function App() {
 
       if (bell < 5) {
         setVisit(true);
-      } else {  
+      } else {
         setVisit(false);
       }
     }
@@ -77,7 +82,21 @@ function App() {
       </div>
 
       <div>
-        <button onClick={handleButtonClick}>Abrir</button>
+        <button
+          onClick={() => {
+            if (!open) {
+              navigate("/unlock");
+            } else {
+              const newRooms = [...rooms];
+              newRooms[3].door.open = !newRooms[3].door.open;
+              setRooms(newRooms);
+              setOpen(newRooms[3].door.open);
+              publish(newRooms);
+            }
+          }}
+        >
+          {open ? "Cerrar" : "Abrir"}
+        </button>
       </div>
 
       <h3>Tus habitaciones</h3>
