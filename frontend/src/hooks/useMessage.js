@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
+import { json } from '../helpers/client';
 
 export default function useMessage() {
+  
+  useEffect(() => {
+    console.log(json + "useMessage");
+  }, [json]);
+
   const [bedroomTemp, setBedroomTemp] = useState(null);
   const [livingRoomTemp, setLivingRoomTemp] = useState(null);
   const [bell, setBell] = useState(null);

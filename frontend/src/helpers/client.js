@@ -1,9 +1,10 @@
 import mqtt from "mqtt";
-import useMessage from "../hooks/useMessage";
+
 
 // var client = new Paho.MQTT.Client("broker.emqx.io", 8084, clientId);
 const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
 const topic = "cesar";
+let json = "";
 
 /**
  *  function onConnect() {
@@ -39,10 +40,9 @@ client.on("error", (e) => {
  */
 
 client.on("message", (topic, message) => {
-  console.log("Un mensaje ha llegado: " + message.toString());
-  const { setMessage } = useMessage();
-  const parsedMessage = JSON.parse(message.toString());
-  setMessage(parsedMessage);
+  message = JSON.parse(message.toString());
+  console.log(message);
+  json = message;
 });
 
 /**
@@ -53,9 +53,9 @@ client.on("message", (topic, message) => {
       client.send(message);
     }
  */
-export const publish = (message) => {
+const publish = (message) => {
   const jsonMessage = JSON.stringify(message);
   client.publish(topic, jsonMessage);
 };
 
-export default publish;
+export { json, publish };
