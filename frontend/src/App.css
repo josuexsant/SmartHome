@@ -2,9 +2,12 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  background-color: #F3F3F3;
+  font-family: 'Inter', sans-serif;
 }
-
+#blue{
+  color: #5FA9FF;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -33,9 +36,7 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
+
 
 .read-the-docs {
   color: #888;

@@ -3,6 +3,8 @@ import { publish } from "./helpers/client";
 import { useEffect, useState } from "react";
 import data from "./helpers/data";
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function App() {
   const navigate = useNavigate();
@@ -25,9 +27,14 @@ function App() {
 
   return (
     <>
-      <h1>SmartHome</h1>
-      <h2>¡Hola Cesar!</h2>
-      <h4>Me da gusto verte de nuevo</h4>
+  
+    <div className="d-flex flex-column">
+      <h1 className="fw-bolder" id="blue">SmartHome</h1>
+      <span>Hola, Cesar</span>
+      <span>Me da gusto verte de nuevo...</span>
+    </div>
+
+      
 
       <div>
         {visit ? (
