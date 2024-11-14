@@ -18,13 +18,18 @@ Este es el JSON que la pagina usara para enviar los datos hacia la ESP32, los da
 
 ```json
 [
+ 
   {
     "name": "bedroom",
     "light": {
-      "on": true,
-      "value": "102"
+      "on": false,
+      "value": "255"
     },
-    "temperature": 24,
+    "ceilingFan": {
+      "on": false,
+      "value": 0
+    },
+    "temperature": 2,
     "air": {
       "on": false,
       "value": 0
@@ -49,11 +54,15 @@ Este es el JSON que la pagina usara para enviar los datos hacia la ESP32, los da
   {
     "name": "livingRoom",
     "light": {
+      "on": true,
+      "value": "204"
+    },
+    "temperature": 3,
+    "air": {
       "on": false,
       "value": 0
     },
-    "temperature": 24,
-    "air": {
+    "ceilingFan": {
       "on": false,
       "value": 0
     },
@@ -67,7 +76,7 @@ Este es el JSON que la pagina usara para enviar los datos hacia la ESP32, los da
     },
     "bell": {
       "on": false,
-      "value": 2
+      "value": 4
     }
   }
 ]
