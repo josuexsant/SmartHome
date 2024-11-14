@@ -11,11 +11,50 @@ function App() {
   const [rooms, setRooms] = useState(data);
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
   const [visit, setVisit] = useState(false);
+  const { bedroomTemp, livingRoomTemp, bell } = useMessage();
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setOpen(rooms[3].door.open);
+  }, [rooms]);
+
+  useEffect(() => {
+    if (bedroomTemp !== null) {
+      setRooms((prevRooms) => {
+        const updatedRooms = [...prevRooms];
+        updatedRooms[0].temperature = bedroomTemp;
+        return updatedRooms;
+      });
+    }
+  }, [bedroomTemp]);
+
+  useEffect(() => {
+    if (livingRoomTemp !== null) {
+      setRooms((prevRooms) => {
+        const updatedRooms = [...prevRooms];
+        updatedRooms[3].temperature = livingRoomTemp;
+        return updatedRooms;
+      });
+    }
+  }, [livingRoomTemp]);
+
+  useEffect(() => {
+    if (bell !== null) {
+      setRooms((prevRooms) => {
+        const updatedRooms = [...prevRooms];
+        updatedRooms[3].bell.value = bell;
+        return updatedRooms;
+      });
+
+      if (bell < 5) {
+        setVisit(true);
+      } else {
+        setVisit(false);
+      }
+    }
+  }, [bell]);
 
   // TODO: Implementar el timbre de la puerta
-  useEffect(() => {
-    setVisit([rooms[3].bell.on]);
-  }, [rooms]);
 
   const handleCheckboxChange = (index) => {
     setSelectedCheckbox(index);
@@ -49,7 +88,21 @@ function App() {
       </div>
 
       <div>
-        <button onClick={handleButtonClick}>Abrir</button>
+        <button
+          onClick={() => {
+            if (!open) {
+              navigate("/unlock");
+            } else {
+              const newRooms = [...rooms];
+              newRooms[3].door.open = !newRooms[3].door.open;
+              setRooms(newRooms);
+              setOpen(newRooms[3].door.open);
+              publish(newRooms);
+            }
+          }}
+        >
+          {open ? "Cerrar" : "Abrir"}
+        </button>
       </div>
 
       <h3>Tus habitaciones</h3>
