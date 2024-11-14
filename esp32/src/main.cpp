@@ -2,11 +2,21 @@
 #include "conexion.h"
 
 // Asignación de pines de la ESP32
-int lightBedroom = 2;
-int sensorBedroom = 12;
-int lightBathroom = 13; 
-int lightKitchen = 14; 
-
+int lightBedroom = 2; //Led
+int ceilingBedroom = 0; //Motor
+int sensorBedroom = 12; //Dallas
+int airBedroom = 0; //Ventilador
+int lightBathroom = 13; //Led
+int servoBathroom =0 ; //Servo
+int lightKitchen = 14;  //Led
+int servoKitchen = 0; //Servo
+int lightLivingRoom = 0; //Led
+int ceilingLivingRoom = 0; //Motor
+int sensorLivingRoom = 12; //Dallas
+int airLivingRoom = 0; //Ventilador
+int displayTV = 0; //Pantalla
+int servoDoor = 0; //Servo
+int sensorBell = 0; // Sensor proximidad
 
 // Asignacion memoria para los sensores
 int bedRoomTemp = 6;

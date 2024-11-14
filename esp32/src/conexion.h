@@ -20,12 +20,11 @@ long lastMsg = 0;
 char msg[50];
 int value = 0;
 
-
 void callback(char *topic, byte *payload, unsigned int length)
 {
   Serial.println("Mensaje recibido bajo el topico -> ");
   Serial.println(topic);
-  
+
   Serial.println("\n");
 
   // Convert payload to string
@@ -140,12 +139,12 @@ void reconnect()
   {
     Serial.println("Intentando conexion MQTT");
 
-    String clientId = "esp32";
+    String clientId = "cesar";
     clientId = clientId + String(random(0xffff), HEX);
 
     if (client.connect(clientId.c_str(), mqtt_user, mqtt_pass))
     {
-      Serial.println("Conexion exitosa a MQTT");
+      client.subscribe("cesar");
     }
     else
     {
