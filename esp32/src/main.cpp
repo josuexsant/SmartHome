@@ -1,18 +1,53 @@
 #include <Arduino.h>
+#include "conexion.h"
 
-// put function declarations here:
-int myFunction(int, int);
+// Asignación de pines de la ESP32
+int lightBedroom = 2;
+int sensorBedroom = 12;
+int lightBathroom = 13; 
+int lightKitchen = 14; 
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+
+// Asignacion memoria para los sensores
+int bedRoomTemp = 6;
+int livingRoomTemp = 3;
+int bell = 2;
+
+void setup()
+{
+  Serial.begin(115200);
+  setup_wifi();
+
+  // Configuración de MQTT
+  client.setServer(mqtt_server, mqtt_port);
+  client.setCallback(callback);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void updateData()
+{
+  // Crear un objeto JSON
+  String payload = "{";
+  payload += "\"bedroomTemp\":" + String(bedRoomTemp) + ",";
+  payload += "\"livingRoomTemp\":" + String(livingRoomTemp) + ",";
+  payload += "\"bell\":" + String(bell);
+  payload += "}";
+
+  // Publicar el mensaje en el tópico MQTT
+  client.publish("cesar", payload.c_str());
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop()
+{
+  static unsigned long lastUpdate = 0;
+  unsigned long now = millis();
+  if (now - lastUpdate >= 1000) {
+    updateData();
+    lastUpdate = now;
+  }
+  // Reconectar si se desconecta de MQTT
+  if (!client.connected())
+  {
+    reconnect();
+  }
+  client.loop(); // Procesar mensajes MQTT
 }
