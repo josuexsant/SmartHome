@@ -5,6 +5,7 @@ import data from "./helpers/data";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import useMessage from "./hooks/useMessage.js"; 
 
 function App() {
   const navigate = useNavigate();
@@ -66,25 +67,37 @@ function App() {
 
   return (
     <>
-  
-    <div className="d-flex flex-column">
-      <h1 className="fw-bolder" id="blue">SmartHome</h1>
-      <span>Hola, Cesar</span>
-      <span>Me da gusto verte de nuevo...</span>
+    <div className="row">
+      <div className="col-10 p-0">
+      <div className="d-flex flex-column lh-sm">
+      <h1 className="fw-bolder fs-4 blue m-0" id="blue">SmartHome</h1>
+      <span className="fs-5">Hola, Cesar</span>
+      <span className="text-truncate">Me da gusto verte de nuevo...</span>
+    </div>
+      </div>
+      <div className="col-2 p-0 d-flex justify-content-end align-items-center">
+      <i className="bi bi-person-circle blue"></i>
+      </div>
     </div>
 
       
 
-      <div>
+      <div className="row mt-3">
+        <div className="col-10 p-0 d-flex justify-content-between align-items-center">
+        <div className="container-funtions  shadow-sm gap-5">
+        <i class="bi bi-bell-fill blue"></i>
         {visit ? (
           <div>
-            <h3>¡Ring Dong!</h3>
+            <span>¡Ring Dong!</span>
             <p>Tienes una visita</p>
             <p>A {[rooms[3].bell.value]} mts</p>
           </div>
         ) : (
-          <h3>No tienes visitas</h3>
+          <span>No tienes visitas</span>
         )}
+      </div>
+        </div>
+        <div className="col-2 p-0 container-funtions">a</div>
       </div>
 
       <div>

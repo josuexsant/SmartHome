@@ -1,13 +1,33 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   background-color: #F3F3F3;
   font-family: 'Inter', sans-serif;
 }
-#blue{
+
+.blue{
   color: #5FA9FF;
 }
+
+.bi-person-circle{
+  font-size: 2.5rem;
+}
+
+#root span{
+  font-size: .75rem;
+}
+
+.container-funtions{
+  border-radius: 15px;
+  background-color: #FFFFFF;
+  padding: 1rem ;
+}
+
+.container-funtions h2{
+  color: #5FA9FF;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
