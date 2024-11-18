@@ -1,63 +1,58 @@
 #root {
   margin: 0 auto;
-  padding: 2rem;
+  max-width: 400px; 
+  width: 100%; 
+  min-height: 100vh; 
   background-color: #F3F3F3;
   font-family: 'Inter', sans-serif;
 }
 
-.blue{
+.blue {
   color: #5FA9FF;
 }
 
-.bi-person-circle{
-  font-size: 2.5rem;
+.person-circle {
+  font-size: 3rem;
 }
 
-#root span{
+#root span {
   font-size: .75rem;
 }
-
-.container-funtions{
+button{
+  border: none;
+}
+.container-funtions {
   border-radius: 15px;
   background-color: #FFFFFF;
-  padding: 1rem ;
+  padding: 1rem;
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  align-items: center;
+  transition: transform 0.4s ease;
 }
 
-.container-funtions h2{
+.container-funtions h2 {
   color: #5FA9FF;
 }
-
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-
 
 .read-the-docs {
   color: #888;
+}
+.hover:hover{
+  background-color: #5FA9FF;
+  transform: translateY(-10px);
+}
+
+.hover:hover svg, .hover:hover span{
+  color: #FFFFFF;
+}
+
+input[type="checkbox"] {
+  background-color: #5FA9FF;
+}
+ input[type="text"] {
+  all: unset;
+  color: #5FA9FF;
+  font-size: 2rem;
 }
