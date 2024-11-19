@@ -6,7 +6,7 @@ const useClient = () => {
 
   useEffect(() => {
     const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
-    const topic = "cesar";
+    const topic = "yuli";
 
     client.on("connect", () => {
       console.log("Conexión exitosa");
