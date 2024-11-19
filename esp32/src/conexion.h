@@ -22,100 +22,16 @@ int value = 0;
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
-  Serial.print("Mensaje recibido bajo el tópico -> ");
-  Serial.println(topic);
-
-  Serial.print("Mensaje: ");
-
-  // Convertir el payload a una cadena
-  String json;
-  for (int i = 0; i < length; i++)
+  String message;
+  for (unsigned int i = 0; i < length; i++)
   {
-    json += (char)payload[i];
+    message += (char)payload[i];
   }
-  
-  Serial.println(json); // Mostrar el mensaje completo recibido en el monitor serial
 
-  // Parse JSON
   StaticJsonDocument<1024> doc;
-  DeserializationError error = deserializeJson(doc, json);
+  DeserializationError error = deserializeJson(doc, message);
 
-  if (error)
-  {
-    Serial.print("Error al parsear JSON: ");
-    Serial.println(error.c_str());
-    return;
-  }
-
-  // Print parsed JSON
-  for (JsonObject room : doc.as<JsonArray>())
-  {
-    Serial.print("Habitación: ");
-    Serial.println(room["name"].as<const char *>());
-
-    if (room.containsKey("light"))
-    {
-      Serial.print("  Luz encendida: ");
-      Serial.println(room["light"]["on"].as<bool>());
-      Serial.print("  Valor de luz: ");
-      Serial.println(room["light"]["value"].as<int>());
-    }
-
-    if (room.containsKey("temperature"))
-    {
-      Serial.print("  Temperatura: ");
-      Serial.println(room["temperature"].as<int>());
-    }
-
-    if (room.containsKey("air"))
-    {
-      Serial.print("  Aire encendido: ");
-      Serial.println(room["air"]["on"].as<bool>());
-      Serial.print("  Valor de aire: ");
-      Serial.println(room["air"]["value"].as<int>());
-    }
-
-    if (room.containsKey("waterService"))
-    {
-      Serial.print("  Servicio de agua: ");
-      Serial.println(room["waterService"].as<bool>());
-    }
-
-    if (room.containsKey("gasService"))
-    {
-      Serial.print("  Servicio de gas: ");
-      Serial.println(room["gasService"].as<bool>());
-    }
-
-    if (room.containsKey("tv"))
-    {
-      Serial.print("  TV encendida: ");
-      Serial.println(room["tv"]["on"].as<bool>());
-      Serial.print("  Temporizador de TV: ");
-      Serial.println(room["tv"]["timer"].as<int>());
-    }
-
-    if (room.containsKey("door"))
-    {
-      Serial.print("  Puerta abierta: ");
-      Serial.println(room["door"]["open"].as<bool>());
-      Serial.print("  Contraseña de puerta: ");
-      Serial.println(room["door"]["password"].as<int>());
-    }
-
-    if (room.containsKey("bell"))
-    {
-      Serial.print("  Timbre encendido: ");
-      Serial.println(room["bell"]["on"].as<bool>());
-      Serial.print("  Valor de timbre: ");
-      Serial.println(room["bell"]["value"].as<int>());
-    }
-
-    Serial.println();
-  }
-
-  // Enviar mensaje al tópico 'yuli' con los datos recibidos
-  client.publish("yuli", json.c_str());
+  Serial.println("Mensaje recibido");
 }
 
 void setup_wifi()
