@@ -5,7 +5,7 @@ import data from "./helpers/data";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faBell, faCircleUser, faBed, faBath, faCouch, faKitchenSet, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faBell, faCircleUser, faBed, faBath, faCouch, faFireBurner, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import useMessage from "./hooks/useMessage.js";
 
 function App() {
@@ -58,7 +58,7 @@ function App() {
 
   // TODO: Implementar el timbre de la puerta
 
-  const iconMap = { "bedroom": faBed, "bathroom": faBath, "livingRoom": faCouch, "kitchen": faKitchenSet };
+  const iconMap = { "bedroom": faBed, "bathroom": faBath, "livingRoom": faCouch, "kitchen": faFireBurner };
 
   const RoomList = ({ rooms, navigate }) => {
     const [selectedButton, setSelectedButton] = useState(null);
@@ -74,6 +74,8 @@ function App() {
     setSelectedButton(index);
     setSelectedCheckbox(index);
   };
+
+
 
   return (
     <>
@@ -95,7 +97,7 @@ function App() {
         <div className="row g-3 mt-3">
 
           <div className="col-8">
-            <div className="container-funtions gap-3 w-100 shadow-sm">
+            <div className="container-funtions d-flex align-items-center gap-3 w-100 shadow-sm">
               <FontAwesomeIcon className="blue fs-3 ms-3" icon={faBell} />
               {visit ? (
                 <div>
@@ -110,7 +112,7 @@ function App() {
           </div>
 
           <div className="col-4">
-            <button className="hover container-funtions shadow-sm flex-column gap-1"
+            <button className="hover container-funtions d-flex align-items-center shadow-sm flex-column gap-1"
               onClick={() => {
                 if (!open) {
                   navigate("/unlock");
@@ -162,48 +164,67 @@ function App() {
                     key !== "temperature" &&
                     key !== "door" &&
                     key !== "bell" && (
-                      <div className="container-funtions mb-2 justify-content-between">
-                        <label>{key}</label>
-
-                        {rooms[selectedCheckbox][key].value !== undefined && (
-                        <input
-                            type="range"
-                            min="0"
-                            max="255"
-                            step="51"
-                            value={rooms[selectedCheckbox][key].value}
-                            onChange={(e) => {
-                              const newRooms = [...rooms];
-                              newRooms[selectedCheckbox][key].value =
-                                e.target.value;
-                              setRooms(newRooms);
-                              publish(newRooms);
-                            }}
-                          />
-                        )}
-                        
-                        <div className="form-check form-switch">
-                        <input className="form-check-input fs-5"  
-                          role="switch"
-                          type="checkbox"
-                          checked={rooms[selectedCheckbox][key].on}
-                          onChange={() => {
-                            const newRooms = [...rooms];
-                            newRooms[selectedCheckbox][key].on =
-                              !newRooms[selectedCheckbox][key].on;
-                            setRooms(newRooms);
-                            publish(newRooms);
-                          }}
-                        />
+                      <div className="container-funtions mb-2">
+                        {/* Primera fila: Etiqueta y Switch */}
+                        <div className="row align-items-center">
+                          <div className="col-8">
+                            {/* Etiqueta del dispositivo */}
+                            <label>{key}</label>
+                          </div>
+                          <div className="col-4 d-flex justify-content-end">
+                            {/* Switch del dispositivo */}
+                            <div className="form-check form-switch">
+                              <input
+                                className="form-check-input fs-5"
+                                role="switch"
+                                type="checkbox"
+                                checked={rooms[selectedCheckbox][key].on}
+                                onChange={() => {
+                                  const newRooms = [...rooms];
+                                  const isOn = !newRooms[selectedCheckbox][key].on;
+                                  newRooms[selectedCheckbox][key].on = isOn;
+                                  newRooms[selectedCheckbox][key].showSlider = isOn;
+                                  setRooms(newRooms);
+                                  publish(newRooms);
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
+
+                        {/* Fila separada: Slider */}
+                        {rooms[selectedCheckbox][key].showSlider && (
+                          <div className="row mt-2">
+                            <div className="col-12">
+                              <input
+                                className="form-range w-100"
+                                type="range"
+                                min="0"
+                                max="255"
+                                step="51"
+                                value={rooms[selectedCheckbox][key].value}
+                                onChange={(e) => {
+                                  const newRooms = [...rooms];
+                                  newRooms[selectedCheckbox][key].value = e.target.value;
+                                  setRooms(newRooms);
+                                  publish(newRooms);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
+
+
+
                     )}
                 </div>
-
               ))}
             </>
           )}
         </div>
+
+
       </div>
     </>
   );
