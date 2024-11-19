@@ -1,10 +1,10 @@
-#include <ArduinoJson.h>
-#include <Arduino.h>
-#include <PubSubClient.h> //Libreria del servidor MQTT
-#include <WiFi.h>
-
 #ifndef conexion_h
 #define conexion_h
+
+#include <ArduinoJson.h>
+#include <Arduino.h>
+#include <PubSubClient.h> // Libreria del servidor MQTT
+#include <WiFi.h>
 
 const char *ssid = "BUAP_Estudiantes";
 const char *password = "f85ac21de4";
@@ -22,17 +22,19 @@ int value = 0;
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
-  Serial.println("Mensaje recibido bajo el topico -> ");
+  Serial.print("Mensaje recibido bajo el tópico -> ");
   Serial.println(topic);
 
-  Serial.println("\n");
+  Serial.print("Mensaje: ");
 
-  // Convert payload to string
+  // Convertir el payload a una cadena
   String json;
   for (int i = 0; i < length; i++)
   {
     json += (char)payload[i];
   }
+  
+  Serial.println(json); // Mostrar el mensaje completo recibido en el monitor serial
 
   // Parse JSON
   StaticJsonDocument<1024> doc;
@@ -48,7 +50,7 @@ void callback(char *topic, byte *payload, unsigned int length)
   // Print parsed JSON
   for (JsonObject room : doc.as<JsonArray>())
   {
-    Serial.print("Habitacion: ");
+    Serial.print("Habitación: ");
     Serial.println(room["name"].as<const char *>());
 
     if (room.containsKey("light"))
@@ -111,6 +113,9 @@ void callback(char *topic, byte *payload, unsigned int length)
 
     Serial.println();
   }
+
+  // Enviar mensaje al tópico 'yuli' con los datos recibidos
+  client.publish("yuli", json.c_str());
 }
 
 void setup_wifi()
@@ -137,7 +142,7 @@ void reconnect()
 {
   while (!client.connected())
   {
-    Serial.println("Intentando conexion MQTT");
+    Serial.println("Intentando conexión MQTT");
 
     String clientId = "cesar";
     clientId = clientId + String(random(0xffff), HEX);
@@ -148,9 +153,9 @@ void reconnect()
     }
     else
     {
-      Serial.println("Fallo la conexion");
+      Serial.println("Fallo la conexión");
       Serial.println(client.state());
-      Serial.println("Se intentara de nuevo en 5 segundos");
+      Serial.println("Se intentará de nuevo en 5 segundos");
       delay(5000);
     }
   }
@@ -159,7 +164,7 @@ void reconnect()
 void send(String message)
 {
   Serial.println("Mensaje enviado");
-  client.publish("cesar", message.c_str());
+  client.publish("yuli", message.c_str());
 }
 
 #endif
