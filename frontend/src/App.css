@@ -47,8 +47,12 @@ button{
 }
 
 input[type="checkbox"] {
+  background-color: white;
+}
+input[type="checkbox"]:checked{
   background-color: #5FA9FF;
 }
+
  input[type="text"] {
   all: unset;
   color: #5FA9FF;
