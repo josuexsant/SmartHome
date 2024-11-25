@@ -182,8 +182,12 @@ function App() {
                                 onChange={() => {
                                   const newRooms = [...rooms];
                                   const isOn = !newRooms[selectedCheckbox][key].on;
-                                  newRooms[selectedCheckbox][key].on = isOn;
-                                  newRooms[selectedCheckbox][key].showSlider = isOn;
+                                  if (key === "waterService" || key === "gasService") {
+                                    newRooms[selectedCheckbox][key] = { ...newRooms[selectedCheckbox][key], on: isOn };
+                                  } else {
+                                    newRooms[selectedCheckbox][key].on = isOn;
+                                    newRooms[selectedCheckbox][key].showSlider = isOn;
+                                  }
                                   setRooms(newRooms);
                                   publish(newRooms);
                                 }}
