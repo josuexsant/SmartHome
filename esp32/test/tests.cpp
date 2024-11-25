@@ -6,8 +6,8 @@
 #define lightKitchen 18    // Si funciona
 #define lightLivingRoom 19 // Si funciona
 #define servoBathroom  14 // Si funciona
-#define servoKitchen  
-#define servoDoor 
+#define servoKitchen  27 // Si funciona 
+#define servoDoor 33 // Si funciona
 
 Servo servo;
 
@@ -45,6 +45,7 @@ void testServo()
   }
 }
 
+void testMoto(){}
 void setup()
 {
   pinMode(lightBathroom, OUTPUT);
@@ -53,7 +54,7 @@ void setup()
   pinMode(lightLivingRoom, OUTPUT);
   Serial.begin(115200);
   Serial.println("Hello World");
-  servo.attach(servoBathroom); // Conecta el servo al pin 14
+  servo.attach(servoDoor); // Conecta el servo al pin de test
 }
 
 void loop()
