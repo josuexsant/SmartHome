@@ -8,8 +8,15 @@
 #define servoBathroom  14 // Si funciona
 #define servoKitchen  27 // Si funciona 
 #define servoDoor 33 // Si funciona
+#define enableCeilingBedroom 25 //Motor
 
 Servo servo;
+
+const byte motorBedA = 5;
+const byte motorBedB = 4;
+const int motorChannel = 1;
+const int freq = 5000;
+const int resolution = 8;
 
 void testLight(int pin)
 {
@@ -45,9 +52,27 @@ void testServo()
   }
 }
 
-void testMoto(){}
+void control_izq(bool sentido, byte vel) {
+  if (sentido) {
+    digitalWrite(motorBedA, HIGH);
+    digitalWrite(motorBedB, LOW);
+  } else {
+    digitalWrite(motorBedA, LOW);
+    digitalWrite(motorBedB, HIGH);
+  ledcWrite(motorChannel, vel);
+  ledcWrite(0, vel);
+}
+
+void testMotor(){
+  control_izq(true,255);
+}
+
 void setup()
 {
+  pinMode(motorBedA, OUTPUT);
+  ledcSetup(motorChannel, freq, resolution);
+  ledcAttachPin(enableCeilingBedroom, motorChannel);
+  pinMode(lightBathroom, OUTPUT);
   pinMode(lightBathroom, OUTPUT);
   pinMode(lightBedroom, OUTPUT);
   pinMode(lightKitchen, OUTPUT);
@@ -59,5 +84,10 @@ void setup()
 
 void loop()
 {
-  testServo();
+  //testServo();
+  //testLight(lightBathroom);
+  //testLight(lightBedroom);
+  //testLight(lightKitchen);
+  //testLight(lightLivingRoom);
+  testMotor();
 }
