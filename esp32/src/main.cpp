@@ -1,27 +1,15 @@
 #include <Arduino.h>
+#include "bathroom.h"
 #include "conexion.h"
+#include "bedroom.h"
+#include "kitchen.h"
+#include "livingroom.h"
 
-// Asignación de pines de la ESP32
-int lightBedroom = 2; // Led
-int ceilingBedroom = 0; // Motor
-int sensorBedroom = 12; // Dallas
-int airBedroom = 0; // Ventilador
-int lightBathroom = 13; // Led
-int servoBathroom = 0; // Servo
-int lightKitchen = 14;  // Led
-int servoKitchen = 0; // Servo
-int lightLivingRoom = 0; // Led
-int ceilingLivingRoom = 0; // Motor
-int sensorLivingRoom = 12; // Dallas
-int airLivingRoom = 0; // Ventilador
-int displayTV = 0; // Pantalla
-int servoDoor = 0; // Servo
-int sensorBell = 0; // Sensor de proximidad
-
-// Asignación de memoria para los sensores
+/*
 int bedRoomTemp = 6;
 int livingRoomTemp = 3;
 int bell = 2;
+*/
 
 void setup()
 {
@@ -31,8 +19,16 @@ void setup()
   // Configuración de MQTT
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
+
+  setupBathroom();
+  setupBedroom();
+  setupKitchen();
+  setupLivingroom();
+
+  client.setBufferSize(2048);
 }
 
+/*
 void updateData()
 {
   // Crear un objeto JSON
@@ -43,21 +39,24 @@ void updateData()
   payload += "}";
 
   // Publicar el mensaje en el tópico MQTT
-  client.publish("yuli", payload.c_str());
+  client.publish("cesar", payload.c_str());
 }
+*/
 
 void loop()
 {
-  static unsigned long lastUpdate = 0;
+  static unsigned long lastTemperatureUpdate = 0;
   unsigned long now = millis();
-  if (now - lastUpdate >= 1000) {
-    updateData();
-    lastUpdate = now;
+
+  if (now - lastTemperatureUpdate >= 1000)
+  { // Enviar temperatura cada segundo
+    sendTemperatureBed(client);
+    lastTemperatureUpdate = now;
   }
-  // Reconectar si se desconecta de MQTT
+
   if (!client.connected())
   {
     reconnect();
   }
-  client.loop(); // Procesar mensajes MQTT
+  client.loop();
 }
