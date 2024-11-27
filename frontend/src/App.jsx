@@ -148,7 +148,7 @@ function App() {
 
           <div className="col-4">
             <button
-              className="hover container-funtions d-flex align-items-center shadow-sm flex-column gap-1"
+              className="hover container-funtions d-flex align-items-center justify-content-center shadow-sm flex-column gap-1"
               onClick={() => {
                 if (!open) {
                   navigate("/unlock");
