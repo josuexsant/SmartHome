@@ -29,7 +29,8 @@ export const data = [
       on: false,
       value: 0,
     },
-    gasService: false,
+    gasService:  false,
+
   },
   {
     name: "livingRoom",

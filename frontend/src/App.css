@@ -58,3 +58,9 @@ input[type="checkbox"]:checked{
   color: #5FA9FF;
   font-size: 2rem;
 }
+.error-message {
+  color: red;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  text-align: center;
+}

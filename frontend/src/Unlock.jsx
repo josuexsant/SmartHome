@@ -60,7 +60,7 @@ function Unlock() {
       </div>
 
       <p className="fs-6 text-center mt-5">Ingresa tu contraseña</p>
-      <p>{message}</p>
+      {message && <p className="error-message">{message}</p>}
       <input
         className="w-100 text-center"
         type="text"
