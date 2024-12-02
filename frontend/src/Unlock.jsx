@@ -64,55 +64,53 @@ function Unlock() {
       <input
         className="w-100 text-center"
         type="text"
-        value={password}
+        value={"*".repeat(password.length)}
         readOnly
       />
       <div className="row d-flex align-items-center justify-content-between p-5 gap-2">
-        {[...Array(10).keys()].map((num) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
           <button
-            className="hover col-3 blue fw-bold container-funtions justify-content-center"
+            className="hover  col-3 blue fw-bold container-funtions justify-content-center align-items-center"
             key={num}
             onClick={() => handleButtonClick(num.toString())}
           >
-            <span className="fs-2">{num}</span>
+            <span className="fs-3">{num}</span>
           </button>
         ))}
+        <button
+          className="hover col-3 blue fw-bold container-funtions justify-content-center align-items-center"
+          onClick={() => setPassword((prev) => prev.slice(0, -1))}
+        >
+          <FontAwesomeIcon className="blue fs-1" icon={faXmark} />
+        </button>
+        <button
+          className="hover col-3 blue fw-bold container-funtions justify-content-center align-items-center"
+          onClick={() => handleButtonClick("0")}
+        >
+          <span className="fs-3">0</span>
+        </button>
+        <button
+          className="hover col-3 blue fw-bold container-funtions justify-content-center align-items-center"
+          onClick={handleAccept}
+        >
+          <FontAwesomeIcon className="blue fs-1" icon={faCheck} />
+        </button>
       </div>
 
       <div className="container">
-        <div className="row">
-          <div className="col-3">
-            <button
-              className="hover container-funtions d-flex justify-content-center align-items-center"
-              onClick={handleAccept}
-            >
-              <FontAwesomeIcon className="blue fs-3" icon={faCheck} />
-            </button>
-          </div>
-          <div className="col-3">
-            <button
-              className="hover container-funtions d-flex justify-content-center align-items-center"
-              onClick={() => setPassword("")}
-            >
-              <FontAwesomeIcon className="blue fs-3" icon={faRotateRight} />
-            </button>
-          </div>
-          <div className="col-3">
-            <button
-              className="hover container-funtions d-flex justify-content-center align-items-center"
-              onClick={() => setPassword((prev) => prev.slice(0, -1))}
-            >
-              <FontAwesomeIcon className="blue fs-3" icon={faXmark} />
-            </button>
-          </div>
-          <div className="col-3">
-            <button
-              className="hover container-funtions d-flex justify-content-center align-items-center"
-              onClick={() => navigate("/")}
-            >
-              <FontAwesomeIcon className="blue fs-3" icon={faArrowLeft} />
-            </button>
-          </div>
+        <div className="d-flex justify-content-between">
+          <button
+            className="hover mx-3 container-funtions d-flex justify-content-center align-items-center"
+            onClick={() => navigate("/")}
+          >
+            <FontAwesomeIcon className="blue fs-3" icon={faArrowLeft} />
+          </button>
+          <button
+            className="hover mx-4 container-funtions d-flex justify-content-center align-items-center"
+            onClick={() => setPassword("")}
+          >
+            <FontAwesomeIcon className="blue fs-3" icon={faRotateRight} />
+          </button>
         </div>
       </div>
     </div>
