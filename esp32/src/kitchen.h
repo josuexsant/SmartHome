@@ -6,7 +6,7 @@
 
 //Pines
 Servo servoKit;
-#define lightKitchen 16 //Led
+#define lightKitchen 18 //Led
 const int servoKitchen = 27; //Servo
 
 //variables
@@ -15,9 +15,10 @@ bool ledStateKit = false;
 bool servoStateKit = false; 
 
 void setupKitchen() {
+  Serial.begin(115200);
   pinMode(lightKitchen, OUTPUT);
-  ledcAttachPin(lightKitchen, 4); // Canal para PWM
-  ledcSetup(4, 5000, 8);           // Frecuencia, resolución
+  ledcAttachPin(lightKitchen, 3); // Canal para PWM
+  ledcSetup(3, 5000, 8);           // Frecuencia, resolución
   servoKit.attach(servoKitchen);
   servoKit.write(0);                  
 }
@@ -25,7 +26,7 @@ void setupKitchen() {
 // Funciones para controlar el LED
 void ledBrightnessKit(int value) {
   brightnessKit = constrain(value, 0, 255); // Asegurar que el brillo esté entre 0 y 255
-  ledcWrite(4, brightnessKit);
+  ledcWrite(3, brightnessKit);
 }
 
 void ledOnKit() {
@@ -38,13 +39,14 @@ void ledOffKit() {
   ledBrightnessKit(0); // Apagar el LED
 }
 
-void servoGasKit(bool state) {
-  servoStateKit = state;
-  if (servoStateKit) {
-    servoKit.write(90); 
-  } else {
-    servoKit.write(0);  
-  }
+void servoGasKitOn() {
+  servoStateKit = true;
+  servoKit.write(90);
+}
+
+void servoGasKitOff() {
+  servoStateKit = false;
+  servoKit.write(0);
 }
 
 #endif

@@ -10,6 +10,8 @@
 #ifndef conexion_h
 #define conexion_h
 
+//const char *ssid = "Totalplay-639A";
+//const char *password = "639A4C757nJn8HAk";
 const char *ssid = "BUAP_Estudiantes";
 const char *password = "f85ac21de4";
 const char *mqtt_server = "broker.emqx.io";
@@ -35,6 +37,9 @@ void callback(char *topic, byte *payload, unsigned int length)
   {
     json += (char)payload[i];
   }
+
+  Serial.print("Contenido del mensaje: ");
+  Serial.println(json);
 
   // Parsear JSON como array
   StaticJsonDocument<2048> doc; // Aumenta el tamaño si el JSON es grande
@@ -75,7 +80,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           ledBrightnessBed(lightValue); // Ajustar brillo
           ledOnBed();
-          Serial.print("Luz encendida.");
+          Serial.println("Luz encendida.");
         }
         else
         {
@@ -94,7 +99,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           ventiladorBed(airValue);
           ventiladorOnBed();
-          Serial.print("Aire acondicionado prendido.");
+          Serial.println("Aire acondicionado prendido.");
         }
         else
         {
@@ -113,7 +118,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           motorBed(motorValue);
           motorOnBed();
-          Serial.print("Ventilador prendido");
+          Serial.println("Ventilador prendido");
         }
         else
         {
@@ -121,14 +126,6 @@ void callback(char *topic, byte *payload, unsigned int length)
           Serial.println("Ventilador apagado.");
         }
       }
-
-      /*Temperatura
-      if (obj.containsKey("temperature"))
-      {
-        sendTemperatureBed(); // Enviar temperatura actual
-        Serial.println("Temperatura enviada.");
-      }
-      */ 
     }
 
     else if (strcmp(roomName, "bathroom") == 0)
@@ -145,7 +142,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           ledBrightnessBat(lightValue); // Ajustar brillo para el baño
           ledOnBat();
-          Serial.print("Luz encendida.");
+          Serial.println("Luz encendida.");
         }
         else
         {
@@ -154,19 +151,19 @@ void callback(char *topic, byte *payload, unsigned int length)
         }
       }
 
-      // Servicio de agua
-    if (obj.containsKey("waterService")){
-      bool waterServiceOn = obj["waterService"];
+      // Servicio de agua waterService
+      if (obj.containsKey("waterService")){
+        bool servoService = obj["waterService"]["on"].as<bool>();
 
-      if (waterServiceOn){
-        servoWaterBat(true); // Activar servicio de agua
-        Serial.println("Servicio de agua activado.");
+        if (servoService){
+          servoWaterBatOn(); // Activar servicio de agua
+          Serial.println("Servicio de agua activado.");
+        }
+        else {
+          servoWaterBatOff(); // Desactivar servicio de agua
+          Serial.println("Servicio de agua desactivado.");
+        }
       }
-      else {
-        servoWaterBat(false); // Desactivar servicio de agua
-        Serial.println("Servicio de agua desactivado.");
-      }
-    }
     }
 
     else if (strcmp(roomName, "kitchen") == 0)
@@ -183,7 +180,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           ledBrightnessKit(lightValue); // Ajustar brillo para el baño
           ledOnKit();
-          Serial.print("Luz encendida.");
+          Serial.println("Luz encendida.");
         }
         else
         {
@@ -193,21 +190,23 @@ void callback(char *topic, byte *payload, unsigned int length)
       }
 
       // Servicio de gas
-    if (obj.containsKey("gasService")){
-      bool gasServiceOn = obj["gasService"];
+      if (obj.containsKey("gasService")){
+        bool servoServiceGas = obj["gasService"]["on"].as<bool>();
 
-      if (gasServiceOn){
-        servoGasKit(true); // Activar servicio de gas
-        Serial.println("Servicio de gas activado.");
-      }
-      else {
-        servoGasKit(false); // Desactivar servicio de gas
-        Serial.println("Servicio de gas desactivado.");
+        if (servoServiceGas)
+        {
+          servoGasKitOn();
+          Serial.println("Servicio de gas activado.");
+        }
+        else
+        {
+          servoGasKitOff(); 
+          Serial.println("Servicio de gas desactivado.");
+        }
       }
     }
-    }
 
-    if (strcmp(roomName, "livingroom") == 0)
+    else if (strcmp(roomName, "livingRoom") == 0)
     {
       Serial.println("....... SALA ..........");
 
@@ -221,7 +220,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           ledBrightnessLiv(lightValue); // Ajustar brillo
           ledOnLiv();
-          Serial.print("Luz encendida.");
+          Serial.println("Luz encendida.");
         }
         else
         {
@@ -240,7 +239,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         {
           ventiladorLiv(airValue);
           ventiladorOnLiv();
-          Serial.print("Aire acondicionado encendido.");
+          Serial.println("Aire acondicionado encendido.");
         }
         else
         {
@@ -257,59 +256,47 @@ void callback(char *topic, byte *payload, unsigned int length)
 
         if (motorOnValue)
         {
-          motorBed(motorValue);
-          motorOnBed();
-          Serial.print("Ventilador encendido.");
+          motorLiv(motorOnValue, motorValue);
+          Serial.println("Ventilador encendido.");
         }
         else
         {
-          motorOffBed();
+          motorLiv(motorOnValue, 0);
           Serial.println("Ventilador apagado.");
         }
       }
 
       // Puerta
       if (obj.containsKey("door")){
-      bool doorOn = obj["door"];
-
-      if (doorOn){
-        servoDoorLiv(true); 
-        Serial.println("Puerta abierta.");
+        bool servoServiceDoor = obj["door"]["open"].as<bool>();
+        
+        if (servoServiceDoor){
+            servoDoorLivOn();
+            Serial.println("Puerta abierta.");
+        }
+        else{
+            servoDoorLivOff(); 
+            Serial.println("Puerta cerrada.");
+          }
+      
       }
-      else {
-        servoDoorLiv(false); 
-        Serial.println("Puerta cerrada.");
-      }
-    }
-
-    // Timbre
-    if (obj.containsKey("tv")){
+    
+      // Timbre
+      if (obj.containsKey("tv")){
       bool tvOnLive = obj["tv"]["on"];
+      int value = obj["tv"]["timer"].as<int>();
     
         if (tvOnLive)
         {
           tvOn();
-          Serial.print("TV encendida.");
+          Serial.println("TV encendida.");
         }
         else
         {
           tvOff();
           Serial.println("TV apagada.");
         }
-    }
-
-    /*Temperatura
-    if (obj.containsKey("temperature")){
-        sendTemperatureLiv(); // Enviar temperatura actual
-        Serial.println("Temperatura enviada.");
-    }
-    */ 
-
-    /*Timbre
-    if (obj.containsKey("bell")){
-        checkBell();
-    }
-    */ 
+      }
     }
 
     else

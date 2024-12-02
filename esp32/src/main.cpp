@@ -5,12 +5,6 @@
 #include "kitchen.h"
 #include "livingroom.h"
 
-/*
-int bedRoomTemp = 6;
-int livingRoomTemp = 3;
-int bell = 2;
-*/
-
 void setup()
 {
   Serial.begin(115200);
@@ -24,37 +18,121 @@ void setup()
   setupBedroom();
   setupKitchen();
   setupLivingroom();
-
+  
+  if (tvState) {
+    tvOn();
+  } else {
+    tvOff();
+  }
+  
   client.setBufferSize(2048);
+
 }
 
-/*
-void updateData()
-{
-  // Crear un objeto JSON
-  String payload = "{";
-  payload += "\"bedroomTemp\":" + String(bedRoomTemp) + ",";
-  payload += "\"livingRoomTemp\":" + String(livingRoomTemp) + ",";
-  payload += "\"bell\":" + String(bell);
-  payload += "}";
-
-  // Publicar el mensaje en el tópico MQTT
-  client.publish("cesar", payload.c_str());
+// Crear el mensaje JSON
+String createJsonMessage(float bedroomTemp, float livingRoomTemp, int bellState) {
+    String message = "{";
+    message += "\"bedroomTemp\":" + String(bedroomTemp) + ",";
+    message += "\"livingRoomTemp\":" + String(livingRoomTemp) + ",";
+    message += "\"bell\":" + String(bellState);
+    message += "}";
+    return message;
 }
-*/
+
+void sendCombinedMessage(PubSubClient& client) {
+    float bedroomTemp = getTemperatureBed();
+    float livingRoomTemp = getTemperatureLiv();
+    int bellState = checkBell();
+
+    String message = createJsonMessage(bedroomTemp, livingRoomTemp, bellState);
+    client.publish("yuli", message.c_str());
+}
+
 
 void loop()
 {
   static unsigned long lastTemperatureUpdate = 0;
   unsigned long now = millis();
     
-    if (now - lastTemperatureUpdate >= 1000) { // Enviar temperatura cada segundo
-        sendTemperatureBed(client);
-        lastTemperatureUpdate = now;
-    }
+  if (!client.connected()) {
+    reconnect();
+  }
+  
+  client.loop();
 
-    if (!client.connected()) {
-        reconnect();
-    }
-    client.loop();
+  if (now - lastTemperatureUpdate >= 1000) { // Enviar mensaje cada segundo
+    sendCombinedMessage(client);
+    lastTemperatureUpdate = now;
+  }
+  
+  // Funciones Bathroom
+  if (ledStateBat) {
+    ledOnBat();
+  } else {
+    ledOffBat();
+  }
+
+  if (servoStateBat) {
+    servoWaterBatOn(); 
+  } else {
+    servoWaterBatOff(); 
+  }
+
+  // Funciones Bedroom
+  if (ledStateBed) {
+    ledOnBed();
+  } else {
+    ledOffBed();
+  }
+
+  if (ventiladorStateBed) {
+    ventiladorOnBed();
+  } else {
+    ventiladorOffBed();
+  }
+
+  if (motorStateBed) {
+    motorOnBed();
+  } else {
+    motorOffBed();
+  }
+
+  // Funciones Kitchen
+  if (ledStateKit) {
+    ledOnKit();
+  } else {
+    ledOffKit();
+  }
+
+  if (servoStateKit) {
+    servoGasKitOn(); 
+  } else {
+    servoGasKitOff(); 
+  }
+
+  // Funciones Livingroom
+  if (ledStateLiv) {
+    ledOnLiv();
+  } else {
+    ledOffLiv();
+  }
+
+  if (ventiladorStateLiv) {
+    ventiladorOnLiv();
+  } else {
+    ventiladorOffLiv();
+  }
+
+  if (motorStateLiv) {
+    motorLiv(true, motorSpeedLiv);
+  } else {
+    motorLiv(false, 0);
+  }
+
+  if (servoStateLiv) {
+    servoDoorLivOn(); 
+  } else {
+    servoDoorLivOff(); 
+  }
+
 }

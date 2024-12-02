@@ -8,12 +8,12 @@
 #define bedroom_h
 
 //Pines
-#define lightBedroom 35 // Led
-#define ONE_WIRE_BUS 2 //Dallas
-const byte motorBedA = 5;
-const byte motorBedB = 4;
-const byte enableCeilingBedroom = 25; //Motor
-int airBedroom = 23; //Ventilador
+#define lightBedroom 13 // Led
+#define ONE_WIRE_BUS 18 //Dallas
+#define airBedroom 5 //Ventilador
+const byte motorBedA = 12;
+const byte motorBedB = 14;
+const byte enableCeilingBedroom = 15; //Motor
 
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
@@ -28,24 +28,25 @@ bool motorStateBed = false;
 
 
 void setupBedroom() {
+  Serial.begin(115200);
+
   pinMode(lightBedroom, OUTPUT);
   pinMode(airBedroom, OUTPUT);
   pinMode(motorBedA, OUTPUT);
   pinMode(motorBedB, OUTPUT);
   pinMode(enableCeilingBedroom, OUTPUT);
-
-  ledcAttachPin(lightBedroom, 1); // Canal PWM led
-  ledcSetup(1, 5000, 8);   
-  ledcAttachPin(airBedroom, 2);   // Canal PWM ventilador
-  ledcSetup(2, 5000, 8);         
-  ledcAttachPin(enableCeilingBedroom, 3); // Canal PWM motor
-  ledcSetup(3, 5000, 8);                        
+  
+  ledcAttachPin(lightBedroom, 2);   // Canal PWM led
+  ledcSetup(2, 5000, 8);        
+  ledcAttachPin(airBedroom, 5);   // Canal PWM ventilador
+  ledcSetup(5, 5000, 8);   
+  ledcAttachPin(enableCeilingBedroom, 6); // Canal PWM motor
+  ledcSetup(6, 5000, 8);                 
 }
 
-// Funciones para controlar el LED
 void ledBrightnessBed(int value) {
   brightnessBed = constrain(value, 0, 255); // Asegurar que el brillo esté entre 0 y 255
-  ledcWrite(1, brightnessBed);
+  ledcWrite(2, brightnessBed);
 }
 
 void ledOnBed() {
@@ -61,7 +62,7 @@ void ledOffBed() {
 // Funciones para controlar el ventilador
 void ventiladorBed(int value) {
   ventiladorSpeedBed = constrain(value, 0, 255); // Asegurar que la velocidad esté entre 0 y 255
-  ledcWrite(2, ventiladorSpeedBed);             // Canal PWM para el ventilador
+  ledcWrite(5, ventiladorSpeedBed);             // Canal PWM para el ventilador
 }
 
 void ventiladorOnBed() {
@@ -75,9 +76,9 @@ void ventiladorOffBed() {
 }
 
 // Funciones para controlar el motor
-void motorBed(int value) {
+void motorBed(byte value) {
   motorSpeedBed = constrain(value, 0, 255); // Asegurar que la velocidad esté entre 0 y 255
-  ledcWrite(3, motorSpeedBed);              // Canal PWM para el motor
+  ledcWrite(6, motorSpeedBed);              // Canal PWM para el motor
 }
 
 void motorOnBed() {
@@ -90,11 +91,9 @@ void motorOffBed() {
   motorBed(0); // Apagar el motor
 }
 
-void sendTemperatureBed(PubSubClient& client) {
+float getTemperatureBed() {
     sensors.requestTemperatures();
-    float temperature = sensors.getTempCByIndex(0);
-    String temperatureMsg = "{\"temperature\":" + String(temperature) + "}";
-    client.publish("cesar", temperatureMsg.c_str());
+    return sensors.getTempCByIndex(0);
 }
 
 
