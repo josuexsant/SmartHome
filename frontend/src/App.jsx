@@ -184,7 +184,7 @@ function App() {
                 onClick={() => changeHabitation(index)}
               >
                 <div className="w-100 text-start">
-                  <span>{room.temperature ? `${room.temperature}ºC` : ""}</span>
+                  <span>{room.temperature ? `26ºC` : ""}</span>
                 </div>
                 {/* Si no hay un icono en iconMap, se usa el icono por defecto */}
                 <FontAwesomeIcon
